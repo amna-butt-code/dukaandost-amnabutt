@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
+import ChatWidget from './components/ChatWidget.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Home from './pages/Home.jsx';
 import ProductDetails from './pages/ProductDetails.jsx';
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="*" element={<p className="center">Page not found</p>} />
         </Routes>
       </main>
+      <ChatWidget />
     </>
   );
 }
