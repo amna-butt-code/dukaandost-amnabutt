@@ -2,9 +2,19 @@ import mongoose from 'mongoose';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 
-// Puts back stock that was already reduced (used when something fails midway)
+const STATUSES = ['Pending', 'Confirmed', 'Delivered', 'Cancelled'];
+
+// The only allowed status changes. Everything else is blocked.
+const ALLOWED = {
+  Pending: ['Confirmed', 'Cancelled'],
+  Confirmed: ['Delivered'],
+};
+
+// Puts back stock (used when an order is cancelled or something fails midway)
 const restoreStock = (reserved) =>
   Promise.all(reserved.map((r) => Product.updateOne({ _id: r.id }, { $inc: { stock: r.qty } })));
+
+const itemsToStock = (order) => order.items.map((i) => ({ id: i.product, qty: i.quantity }));
 
 export const createOrder = async (req, res) => {
   const reserved = []; // [{ id, qty }] stock already reduced for this order
@@ -74,6 +84,103 @@ export const createOrder = async (req, res) => {
   } catch (err) {
     console.error(err);
     await restoreStock(reserved);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Customer: their own orders
+export const getMyOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ customer: req.user._id }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Seller: all orders
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate('customer', 'name email phone')
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Seller: change status (Pending -> Confirmed -> Delivered, or Pending -> Cancelled)
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    if (!STATUSES.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    if (!ALLOWED[order.status]?.includes(status)) {
+      return res
+        .status(400)
+        .json({ message: `Cannot change status from ${order.status} to ${status}` });
+    }
+
+    // Only updates if the status is still what we just read (stops double updates)
+    const updated = await Order.findOneAndUpdate(
+      { _id: order._id, status: order.status },
+      { status },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(409).json({ message: 'This order was just changed. Please refresh.' });
+    }
+
+    if (status === 'Cancelled') await restoreStock(itemsToStock(order));
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Customer: cancel own order, only while Pending. Stock is returned.
+export const cancelOrder = async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Looking up by id AND customer means nobody can cancel someone else's order
+    const order = await Order.findOne({ _id: req.params.id, customer: req.user._id });
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    if (order.status !== 'Pending') {
+      return res.status(400).json({ message: 'Only pending orders can be cancelled' });
+    }
+
+    const updated = await Order.findOneAndUpdate(
+      { _id: order._id, status: 'Pending' },
+      { status: 'Cancelled' },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(400).json({ message: 'Only pending orders can be cancelled' });
+    }
+
+    await restoreStock(itemsToStock(order));
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
