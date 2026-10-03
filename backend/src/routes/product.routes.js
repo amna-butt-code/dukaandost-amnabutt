@@ -6,12 +6,14 @@ import {
   updateProduct,
   deleteProduct,
 } from '../controllers/product.controller.js';
+import { getProductReviews } from '../controllers/review.controller.js';
 import { auth } from '../middleware/auth.middleware.js';
 import { role } from '../middleware/role.middleware.js';
 
 const router = Router();
 
 router.get('/', getProducts);
+router.get('/:id/reviews', getProductReviews);
 router.get('/:id', getProduct);
 router.post('/', auth, role('seller'), createProduct);
 router.put('/:id', auth, role('seller'), updateProduct);

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import ReviewSection from '../components/ReviewSection.jsx';
 import { getError, pkr } from '../utils/format.js';
 
 export default function ProductDetails() {
@@ -14,12 +15,16 @@ export default function ProductDetails() {
   const [added, setAdded] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const loadProduct = useCallback(() => {
     api
       .get(`/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => setError(getError(err)));
   }, [id]);
+
+  useEffect(() => {
+    loadProduct();
+  }, [loadProduct]);
 
   if (error) return <p className="alert">{error}</p>;
   if (!product) return <p className="center">Loading...</p>;
@@ -62,10 +67,7 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      <section className="reviews">
-        <h2>Reviews</h2>
-        <p className="muted">Reviews will appear here.</p>
-      </section>
+      <ReviewSection productId={id} onReviewAdded={loadProduct} />
     </div>
   );
 }

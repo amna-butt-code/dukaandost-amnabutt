@@ -14,6 +14,7 @@ import SellerProducts from './pages/seller/SellerProducts.jsx';
 import ProductForm from './pages/seller/ProductForm.jsx';
 import SellerSettings from './pages/seller/SellerSettings.jsx';
 import SellerOrders from './pages/seller/SellerOrders.jsx';
+import SellerReviews from './pages/seller/SellerReviews.jsx';
 
 export default function App() {
   const customer = ['customer'];
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="/seller/products/:id/edit" element={<ProtectedRoute roles={seller}><ProductForm /></ProtectedRoute>} />
           <Route path="/seller/settings" element={<ProtectedRoute roles={seller}><SellerSettings /></ProtectedRoute>} />
           <Route path="/seller/orders" element={<ProtectedRoute roles={seller}><SellerOrders /></ProtectedRoute>} />
+          <Route path="/seller/reviews" element={<ProtectedRoute roles={seller}><SellerReviews /></ProtectedRoute>} />
 
           <Route path="*" element={<p className="center">Page not found</p>} />
         </Routes>

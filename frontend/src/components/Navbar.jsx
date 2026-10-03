@@ -24,6 +24,7 @@ export default function Navbar() {
             <>
               <Link to="/seller/products">Products</Link>
               <Link to="/seller/orders">Orders</Link>
+              <Link to="/seller/reviews">Reviews</Link>
               <Link to="/seller/settings">Settings</Link>
             </>
           )}

@@ -7,6 +7,7 @@ import settingsRoutes from './routes/settings.routes.js';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import chatRoutes from './routes/chat.routes.js';
+import reviewRoutes from './routes/review.routes.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // 404 for unknown routes
 app.use((req, res) => res.status(404).json({ message: 'Route not found' }));
