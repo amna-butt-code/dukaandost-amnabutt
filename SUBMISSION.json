@@ -1,0 +1,126 @@
+{
+  "project_name": "DukaanDost Lite",
+  "section": "BSSE7E2",
+  "name": "Amna Butt",
+  "roll_no": "2023-ag-10373",
+  "email": "amnab4338@gmail.com",
+  "github_username": "amna-butt-code",
+  "links": {
+    "github_repo": "https://github.com/amna-butt-code/dukaandost-2023ag10373",
+    "demo_video": "",
+    "frontend_live": "",
+    "backend_live": ""
+  },
+  "tech_stack": {
+    "database": "MongoDB",
+    "llm_provider": "Gemini",
+    "llm_model": "gemini-3.5-flash-lite",
+    "hf_access_method": "Inference API",
+    "hf_models": {
+      "sentiment": "cardiffnlp/twitter-xlm-roberta-base-sentiment",
+      "image_captioning": "",
+      "embeddings": ""
+    }
+  },
+  "run_commands": {
+    "backend": "cd backend && npm install && npm run seed && npm run dev",
+    "frontend": "cd frontend && npm install && npm run dev"
+  },
+  "test_accounts": {
+    "seller": { "email": "seller@test.com", "password": "Test@1234" },
+    "customer": { "email": "customer@test.com", "password": "Test@1234" }
+  },
+  "features": {
+    "F01": {
+      "status": "done",
+      "files": [
+        "backend/src/routes/auth.routes.js",
+        "backend/src/controllers/auth.controller.js",
+        "backend/src/middleware/auth.middleware.js",
+        "backend/src/middleware/role.middleware.js",
+        "backend/src/models/User.js",
+        "frontend/src/pages/Login.jsx",
+        "frontend/src/pages/Register.jsx",
+        "frontend/src/components/ProtectedRoute.jsx",
+        "frontend/src/context/AuthContext.jsx"
+      ],
+      "notes": ""
+    },
+    "F02": {
+      "status": "done",
+      "files": [
+        "backend/src/routes/product.routes.js",
+        "backend/src/controllers/product.controller.js",
+        "backend/src/routes/settings.routes.js",
+        "backend/src/controllers/settings.controller.js",
+        "backend/src/models/Product.js",
+        "backend/src/models/StoreSettings.js",
+        "frontend/src/pages/seller/SellerProducts.jsx",
+        "frontend/src/pages/seller/ProductForm.jsx",
+        "frontend/src/pages/seller/SellerSettings.jsx"
+      ],
+      "notes": "Product images are added as image URLs (no file upload)."
+    },
+    "F03": {
+      "status": "done",
+      "files": [
+        "frontend/src/pages/Home.jsx",
+        "frontend/src/pages/ProductDetails.jsx",
+        "frontend/src/pages/Cart.jsx",
+        "frontend/src/pages/Checkout.jsx",
+        "frontend/src/pages/OrderSuccess.jsx",
+        "frontend/src/context/CartContext.jsx",
+        "frontend/src/components/ProductCard.jsx",
+        "backend/src/controllers/order.controller.js",
+        "backend/src/routes/order.routes.js"
+      ],
+      "notes": ""
+    },
+    "F04": {
+      "status": "done",
+      "files": [
+        "backend/src/controllers/order.controller.js",
+        "backend/src/routes/order.routes.js",
+        "backend/src/models/Order.js",
+        "frontend/src/pages/MyOrders.jsx",
+        "frontend/src/pages/seller/SellerOrders.jsx"
+      ],
+      "notes": ""
+    },
+    "F05": {
+      "status": "done",
+      "files": [
+        "backend/src/routes/chat.routes.js",
+        "backend/src/controllers/chat.controller.js",
+        "backend/src/services/ai/chat.service.js",
+        "backend/src/services/ai/llm.service.js",
+        "frontend/src/components/ChatWidget.jsx",
+        "docs/ai-prompts.md"
+      ],
+      "notes": ""
+    },
+    "F06": {
+      "status": "done",
+      "files": [
+        "backend/src/routes/review.routes.js",
+        "backend/src/controllers/review.controller.js",
+        "backend/src/services/ai/sentiment.service.js",
+        "backend/src/models/Review.js",
+        "frontend/src/components/ReviewSection.jsx",
+        "frontend/src/pages/seller/SellerReviews.jsx"
+      ],
+      "notes": "If the Hugging Face model fails, the review is saved with sentiment neutral."
+    }
+  },
+  "bonus": {
+    "B01": { "status": "not_done", "files": [], "notes": "" },
+    "B02": { "status": "not_done", "files": [], "notes": "" },
+    "B03": { "status": "not_done", "files": [], "notes": "" },
+    "B04": { "status": "not_done", "files": [], "notes": "" }
+  },
+  "ai_tools_used": [
+    "Claude (Anthropic) for step-by-step guidance, generating code and debugging help"
+  ],
+  "known_issues": "The sentiment model can label short Roman Urdu reviews wrongly. The AI assistant uses a free-tier LLM and can be rate limited (a friendly message is shown). Product images are URLs, not uploads.",
+  "declaration": "I confirm this is my own work and I can explain every line of the code."
+}
