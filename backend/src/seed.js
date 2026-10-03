@@ -7,8 +7,7 @@ import StoreSettings from './models/StoreSettings.js';
 import Product from './models/Product.js';
 import Order from './models/Order.js';
 import Review from './models/Review.js';
-
-const img = (text) => `https://placehold.co/600x600?text=${encodeURIComponent(text)}`;
+import { imageByTitle } from './seedImages.js';
 
 const products = [
   { title: 'Embroidered Lawn Suit 3-Piece', description: 'Soft cotton lawn with embroidered front and chiffon dupatta. Perfect for summer.', price: 4500, stock: 15, category: 'Clothes' },
@@ -20,7 +19,7 @@ const products = [
   { title: 'Homemade Mango Achaar (500g)', description: 'Spicy homemade mango pickle in mustard oil. No preservatives.', price: 650, stock: 30, category: 'Food' },
   { title: 'Homemade Mixed Achaar (500g)', description: 'Mixed vegetable pickle made the traditional way.', price: 600, stock: 30, category: 'Food' },
   { title: 'Rose Face Cream', description: 'Hydrating rose face cream for all skin types, 50g jar.', price: 950, stock: 18, category: 'Cosmetics' },
-].map((p) => ({ ...p, images: [img(p.title)] }));
+].map((p) => ({ ...p, images: [imageByTitle[p.title]] }));
 
 const run = async () => {
   await connectDB();
