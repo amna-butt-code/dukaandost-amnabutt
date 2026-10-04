@@ -1,4 +1,4 @@
-# DukaanDost Lite — Amna Butt (2023-ag-10373, BSSE7E2)
+# DukaanDost Lite — Amna Butt (BSSE)
 
 A full-stack online store for one small Pakistani business, with an AI assistant that answers customer questions in English, Urdu and Roman Urdu, and review sentiment analysis.
 
