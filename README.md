@@ -114,7 +114,7 @@ The full list with request bodies and example responses is in [docs/api-docs.md]
 
 ## 9. Demo Video
 
-TODO: paste the demo video link here.
+https://drive.google.com/file/d/1Ds8F_fal_qPU49LOVlzpXztI6pV9u1ji/view
 
 ## 10. AI Tools Used During Development
 
